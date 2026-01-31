@@ -37,23 +37,32 @@ class TriageBrain:
         evidence = "\n".join([doc.page_content for doc in results])
         
         # B. The Prompt
+        # B. The Enhanced Prompt (Fixes the "High | Medium | Low" bug)
         prompt = f"""
-        You are a Clinical AI Assistant.
+        You are a Clinical Triage AI. 
+        Analyze the patient based ONLY on the provided GUIDELINES.
         
-        TASK: Analyze these symptoms based ONLY on the provided GUIDELINES.
-        
-        GUIDELINES (Truth):
+        GUIDELINES:
         {evidence}
         
         PATIENT SYMPTOMS:
         {symptoms}
         
-        OUTPUT JSON ONLY:
+        INSTRUCTIONS:
+        1. RISK LEVEL: Choose EXACTLY ONE from: "High", "Medium", or "Low".
+        2. QUESTIONS: Suggest 3 specific "Yes/No" or check-box style questions to rule out danger.
+        3. FORMAT: Output pure JSON.
+        
+        OUTPUT JSON:
         {{
-            "risk_level": "High | Medium | Low",
-            "suspected_condition": "Condition Name",
-            "reasoning": "Why you think this (cite the guidelines)",
-            "follow_up_questions": ["Question 1", "Question 2", "Question 3"]
+            "risk_level": "High", 
+            "suspected_condition": "Pneumonia",
+            "reasoning": "Patient has fever and fast breathing which indicates...",
+            "follow_up_questions": [
+                "Does the child have chest indrawing?",
+                "Is the child unable to drink or breastfeed?",
+                "Has the child had convulsions?"
+            ]
         }}
         """
         
