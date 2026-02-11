@@ -1,0 +1,21 @@
+{
+  "rules": [
+    {
+      "id": "very_severe_disease",
+      "module": "general",
+      "classification": "VERY_SEVERE_DISEASE",
+      "severity": "High",
+      "priority": 1,
+      "base_confidence": 1.0,
+      "criteria": {
+        "logic": "OR",
+        "conditions": [
+          {"field": "not_able_to_drink", "operator": "==", "value": true, "weight": 1},
+          {"field": "vomits_everything", "operator": "==", "value": true, "weight": 1},
+          {"field": "convulsions", "operator": "==", "value": true, "weight": 1},
+          {"field": "lethargic_or_unconscious", "operator": "==", "value": true, "weight": 1}
+        ]
+      }
+    }
+  ]
+}
