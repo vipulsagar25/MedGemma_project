@@ -1,52 +1,42 @@
 
-# 🧠 MedGemma – IMCI Clinical Decision Support (Work in Progress)
+# MedGemma – A Clinical Thinking Partner for Child Health
 
-## 🚀 Overview
+## What's This About?
 
-MedGemma is a pediatric clinical decision-support assistant built around the IMCI (Integrated Management of Childhood Illness) framework.
+MedGemma is an experimental AI assistant designed to help healthcare workers assess sick children using the IMCI (Integrated Management of Childhood Illness) framework. Think of it as a knowledgeable colleague who can help you:
 
-The goal is to design a clinical co-pilot that supports healthcare workers during child assessment by:
-- Guiding structured triage
-- Highlighting danger signs
-- Retrieving relevant IMCI guideline sections
-- Providing explainable decision support
+- Walk through a structured assessment
+- Flag potentially serious warning signs
+- Look up relevant IMCI guidelines quickly
+- Explain why certain things matter
+## How It Works Under the Hood
 
-This project explores hybrid AI architecture combining:
-- Deterministic rule systems
-- Retrieval-Augmented Generation (RAG)
-- Local LLM inference
+Under the surface, MedGemma combines three different approaches:
 
-> ⚠️ **Important:**
-> This is an experimental research project and is **NOT** intended for real clinical deployment.
+1. **Smart rule-based logic** – Deterministic rules that check specific symptoms and conditions
+2. **Context-aware retrieval** – Searches the IMCI handbook to find relevant guidelines (RAG approach)
+3. **Local AI reasoning** – Uses a small language model (Gemma 2B) to explain findings clearly
 
----
-
-## 🏗 Architecture
-
-The system was designed as a multi-layer clinical AI assistant:
-
-### 1️⃣ Retrieval Layer (RAG)
-- IMCI handbook embedded using FastEmbed
-- Hybrid chunking strategy (recursive + overlap)
-- Chroma vector database
-- Top-k similarity retrieval
-
-### 2️⃣ Rule Engine (Experimental)
-- Deterministic rule evaluator
-- JSON-based rule definitions
-- Age-based thresholds
-- Priority-based aggregation
-> This layer is currently under research and not clinically validated.
-
-### 3️⃣ LLM Layer
-- Local inference via Gemma (2B)
-- Structured JSON output enforcement
-- Explanation generation based on retrieved context
-- Strict prompt constraints to reduce hallucination
+**A heads-up:** This is research-grade software. It's not ready for real patient care yet—treat it as an experimental exploration of how AI might support clinical decision-making safely.
 
 ---
 
-## 📂 Project Structure
+## Architecture Overview
+
+The system is built in three layers that work together:
+
+### Layer 1: Knowledge Retrieval
+We've embedded the entire IMCI handbook using FastEmbed and stored it in a vector database (Chroma). When you ask a question, the system searches for the most relevant guideline sections. This keeps answers grounded in official IMCI guidance.
+
+### Layer 2: Rule-Based Decision Engine
+A set of deterministic rules checks symptoms, age, and vital signs to flag potential concerns. These are defined in JSON and follow specific thresholds. *Note: This is still experimental and hasn't been clinically validated.*
+
+### Layer 3: AI Explanations
+A local copy of Gemma (a small language model) runs on-device to explain what the rules found and connect it back to the guidelines. We keep it on a tight leash with strict prompts to prevent it from making things up.
+
+---
+
+## Project Structure
 
 ```
 server/
@@ -67,78 +57,80 @@ server/
 
 ---
 
-## 🧪 Current Status
+## What's Done
 
-- ✔ IMCI handbook processed into vector database
-- ✔ Hybrid chunking implemented
-- ✔ Structured extraction experiments
-- ✔ Deterministic rule engine prototype
-- ✔ FastAPI integration
-- ✔ Local LLM inference
-
----
-
-## 🚧 Pending
-
-- Clinical validation of rules
-- Complete flowchart-to-rule conversion
-- Formal evaluation framework
-- False positive / false negative analysis
-- Edge case testing suite
+- ✔ IMCI handbook converted to embeddings and stored
+- ✔ Chunking and retrieval working
+- ✔ Rule engine built and tested
+- ✔ API endpoints set up with FastAPI
+- ✔ Local model running without external calls
 
 ---
 
-## 🎯 Research Focus
+## What's Next (In Progress)
 
-The core research question explored in this project:
-
-> Can a hybrid deterministic + RAG-based architecture provide reliable IMCI decision support without fully autonomous diagnosis?
-
-Key challenges identified:
-- Rule completeness validation
-- Hallucination mitigation
-- Emergency case prioritization
-- True negative vs false positive balance
-- Threshold fidelity from guideline extraction
+- Validate rules with actual clinicians
+- Convert IMCI flowcharts into formal rules
+- Build a proper testing framework
+- Test for false alarms and missed cases
+- Handle weird edge cases
 
 ---
 
-## ⚠️ Disclaimer
+## The Big Question We're Exploring
 
-This system:
-- Does **NOT** replace a clinician
-- Is **NOT** validated for medical use
-- Is a research prototype for exploring clinical AI architectures
-- Use strictly for educational or experimental purposes.
+Can we build a system that stays reliable by combining rules and AI, without letting the AI make its own decisions?
 
----
+This matters because:
+- **Rules alone are rigid** – They can miss nuance
+- **AI alone is risky in medicine** – It can confidently say wrong things
+- **Combined thoughtfully** – We might get the best of both
 
-## 🛣 Roadmap
-
-Future directions:
-- Formal rule graph extraction from IMCI flowcharts
-- Structured decision tree modeling
-- Emergency override safety layer
-- Model benchmarking (Gemma vs Groq vs larger models)
-- Clinical expert review for rule accuracy
-- Evaluation metrics for diagnostic reliability
+The hardest parts so far:
+- Getting the rules complete and accurate
+- Keeping the AI from confabulating
+- Knowing when something is an emergency
+- Balancing false alarms vs. missed cases
 
 ---
 
-## 🧠 Why This Project Matters
+## Please Read This
 
-Healthcare AI systems are difficult because:
-- Minor rule errors can lead to unsafe outputs
-- LLM hallucinations are unacceptable in medical settings
-- Deterministic logic must align exactly with clinical guidelines
+Let's be clear about what this is and isn't:
 
-This project documents an attempt to design a safer hybrid architecture rather than relying solely on generative AI.
+- **This is NOT a doctor.** It doesn't replace your clinical judgment.
+- **This is NOT approved for patient care.** It's a research prototype.
+- **This is a learning experiment.** We're exploring ideas, not deploying products.
+- **Use it for learning only.** Try it in educational settings or controlled research.
+
+If you use this with real patients without proper validation, that's on you—and it could hurt people.
 
 ---
 
-## 🧑‍💻 Author Note
+## Where We Want to Go
 
-This is an evolving system.
-The deterministic rule engine is incomplete and requires clinical validation before further development.
+- Extract rules directly from IMCI flowcharts
+- Model everything as a formal decision tree
+- Add emergency overrides and safety checks
+- Benchmark different AI models
+- Get real clinicians to review the rules
+- Create proper benchmarks for accuracy and safety
 
-The long-term goal is to create a structured IMCI flowchart engine combined with explainable retrieval support.
+---
+
+## Why This Matters
+
+Building trustworthy AI for medicine is genuinely hard:
+- One small mistake in logic can cascade into bad advice
+- AI models can sound confident while being completely wrong (hallucinations)
+- Every rule must match what the guidelines actually say—no improvisation
+
+Most AI hype focuses on just throwing big language models at problems. This project explores a different path: what if we combine rules and retrieval with careful AI oversight? Maybe that's safer.
+
+---
+
+## A Note From the Developer
+
+This is work in progress. The rule engine is still rough around the edges and needs clinicians to poke holes in it.
+
+Long-term, if this goes anywhere, it should become a proper engine that reads IMCI flowcharts directly and explains its reasoning clearly. That's the dream—a tool that thinks like a clinician, not like a startup.
